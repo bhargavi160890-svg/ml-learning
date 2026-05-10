@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.pyc
+.env
+
+# VS Code
+.vscode/
+
+# Data / notebooks checkpoints
+.ipynb_checkpoints/
+*.csv      # optional — remove this line if you want CSVs tracked
