@@ -1,0 +1,31 @@
+genre,age_group,language,book_name,author
+Fantasy,Kids,English,Harry Potter and the Sorcerer's Stone,J.K. Rowling
+Fantasy,Teen,English,Harry Potter and the Goblet of Fire,J.K. Rowling
+Fantasy,Adult,English,The Hobbit,J.R.R. Tolkien
+Science Fiction,Adult,English,Dune,Frank Herbert
+Science Fiction,Teen,English,The Hunger Games,Suzanne Collins
+Mystery,Adult,English,Sherlock Holmes,Arthur Conan Doyle
+Mystery,Teen,English,Nancy Drew,Carolyn Keene
+Romance,Adult,English,Pride and Prejudice,Jane Austen
+Biography,Adult,English,Steve Jobs,Walter Isaacson
+History,Senior,English,Sapiens,Yuval Noah Harari
+Self Help,Adult,English,Atomic Habits,James Clear
+Technology,Adult,English,Clean Code,Robert C. Martin
+Business,Adult,English,Zero to One,Peter Thiel
+Adventure,Kids,English,Percy Jackson,Rick Riordan
+Horror,Adult,English,The Shining,Stephen King
+Fantasy,Kids,Hindi,Harry Potter और पारस पत्थर,J.K. Rowling
+Mystery,Adult,Hindi,शरलॉक होम्स,Arthur Conan Doyle
+Self Help,Adult,Hindi,एटॉमिक हैबिट्स,James Clear
+Biography,Adult,Hindi,स्टीव जॉब्स,Walter Isaacson
+Business,Adult,Hindi,ज़ीरो टू वन,Peter Thiel
+Fantasy,Kids,Telugu,హ్యారీ పోట్టర్ మరియు ఫిలాసఫర్స్ స్టోన్,J.K. Rowling
+Adventure,Kids,Telugu,పెర్సీ జాక్సన్,Rick Riordan
+Self Help,Adult,Telugu,అటామిక్ హ్యాబిట్స్,James Clear
+Technology,Adult,Telugu,క్లీన్ కోడ్,Robert C. Martin
+Business,Adult,Telugu,జీరో టు వన్,Peter Thiel
+Fantasy,Teen,Tamil,ஹாரி பாட்டர்,J.K. Rowling
+Mystery,Adult,Tamil,ஷெர்லாக் ஹோம்ஸ்,Arthur Conan Doyle
+Self Help,Adult,Tamil,அட்டாமிக் ஹேபிட்ஸ்,James Clear
+Fantasy,Adult,French,Le Hobbit,J.R.R. Tolkien
+Science Fiction,Adult,Spanish,Duna,Frank Herbert

@@ -1,0 +1,13 @@
+zodiac,genre,book,author,rating,reading_time,difficulty
+Aries,Adventure,Percy Jackson and the Lightning Thief,Rick Riordan,4.7,8 hours,Easy
+Taurus,Romance,Pride and Prejudice,Jane Austen,4.8,12 hours,Moderate
+Gemini,Mystery,Sherlock Holmes,Arthur Conan Doyle,4.9,10 hours,Moderate
+Cancer,Biography,Wings of Fire,A P J Abdul Kalam,4.9,7 hours,Easy
+Leo,Fantasy,The Hobbit,J R R Tolkien,4.8,11 hours,Moderate
+Virgo,Self Help,Atomic Habits,James Clear,4.8,6 hours,Easy
+Libra,Romance,The Notebook,Nicholas Sparks,4.6,8 hours,Easy
+Scorpio,Horror,Dracula,Bram Stoker,4.5,12 hours,Hard
+Sagittarius,Adventure,Treasure Island,R L Stevenson,4.6,9 hours,Moderate
+Capricorn,Business,Rich Dad Poor Dad,Robert Kiyosaki,4.7,5 hours,Easy
+Aquarius,Science Fiction,Dune,Frank Herbert,4.8,15 hours,Hard
+Pisces,Fantasy,Harry Potter and the Sorcerer's Stone,J K Rowling,4.9,9 hours,Easy

@@ -1,0 +1,582 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "get hackathon project",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": [
+                        "quit",
+                        "exit",
+                        "close",
+                        "goodbye",
+                        "bye"
+                    ]
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": [
+                        "quit",
+                        "exit",
+                        "close",
+                        "goodbye",
+                        "bye"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "CaptureZodiacSignIntent",
+                    "slots": [
+                        {
+                            "name": "day",
+                            "type": "AMAZON.Ordinal",
+                            "multipleValues": {
+                                "enabled": false
+                            }
+                        },
+                        {
+                            "name": "month",
+                            "type": "AMAZON.Month",
+                            "multipleValues": {
+                                "enabled": false
+                            }
+                        },
+                        {
+                            "name": "year",
+                            "type": "AMAZON.FOUR_DIGIT_NUMBER",
+                            "multipleValues": {
+                                "enabled": false
+                            }
+                        }
+                    ],
+                    "samples": [
+                        "{month} {day} {year}",
+                        "My birthday is {month} {day} {year}",
+                        "I was born on {month} {day} {year}",
+                        "My date of birth is {month} {day} {year}",
+                        "My DOB is {month} {day} {year}",
+                        "Tell me my zodiac sign for {month} {day} {year}",
+                        "What is my zodiac sign if I was born on {month} {day} {year}",
+                        "Find my zodiac sign using {month} {day} {year}",
+                        "Determine my zodiac sign from {month} {day} {year}",
+                        "Calculate my zodiac sign for {month} {day} {year}",
+                        "Which zodiac sign belongs to {month} {day} {year}",
+                        "What is my star sign for {month} {day} {year}",
+                        "Tell me my star sign for {month} {day} {year}",
+                        "What's my horoscope sign for {month} {day} {year}",
+                        "Which horoscope sign am I if I was born on {month} {day} {year}",
+                        "What is my astrology sign for {month} {day} {year}",
+                        "Tell me my astrology sign using {month} {day} {year}",
+                        "Can you find my zodiac sign from {month} {day} {year}",
+                        "Can you tell me my zodiac sign for {month} {day} {year}",
+                        "Please tell me my zodiac sign for {month} {day} {year}",
+                        "Find my horoscope using {month} {day} {year}",
+                        "Tell me my birth sign for {month} {day} {year}",
+                        "What is my birth sign if I was born on {month} {day} {year}",
+                        "Identify my zodiac sign from {month} {day} {year}",
+                        "Check my zodiac sign using {month} {day} {year}",
+                        "What zodiac sign matches {month} {day} {year}",
+                        "Which zodiac sign matches my birthday {month} {day} {year}",
+                        "Find the zodiac sign for {month} {day} {year}",
+                        "Tell me which zodiac sign I belong to for {month} {day} {year}",
+                        "Which sign am I if my birthday is {month} {day} {year}",
+                        "I want to know my zodiac sign for {month} {day} {year}",
+                        "I would like to know my zodiac sign for {month} {day} {year}",
+                        "Can you identify my horoscope sign for {month} {day} {year}",
+                        "Find my astrological sign for {month} {day} {year}",
+                        "What's my sun sign for {month} {day} {year}",
+                        "Tell me my sun sign using {month} {day} {year}",
+                        "Use my birthday {month} {day} {year} to find my zodiac sign",
+                        "Please find my zodiac sign from my birth date {month} {day} {year}",
+                        "What sign was I born under on {month} {day} {year}",
+                        "Can you calculate my birth sign from {month} {day} {year}",
+                        "I was born {month} {day} {year}",
+                        "Born on {month} {day} {year}",
+                        "Birth date {month} {day} {year}",
+                        "My birth date was {month} {day} {year}",
+                        "The day I was born was {month} {day} {year}",
+                        "Can you tell me my birth sign using my birthday {month} {day} {year}",
+                        "Find my zodiac based on {month} {day} {year}",
+                        "Tell me the zodiac associated with {month} {day} {year}",
+                        "Which astrological sign is {month} {day} {year}",
+                        "Give me my zodiac sign for {month} {day} {year}",
+                        "Help me find my zodiac sign for {month} {day} {year}"
+                    ]
+                },
+                {
+                    "name": "BookRecommendationIntent",
+                    "slots": [
+                        {
+                            "name": "genre",
+                            "type": "BOOK_GENRE",
+                            "samples": [
+                                "Fantasy",
+                                "wizard stories",
+                                "fantasy novels",
+                                "mystery",
+                                "detective",
+                                "crime",
+                                "suspense",
+                                "investigation",
+                                "thriller",
+                                "adventure",
+                                "action",
+                                "exploration",
+                                "journey",
+                                "quest",
+                                "horror",
+                                "scary",
+                                "ghost stories",
+                                "thriller horror",
+                                "romance",
+                                "love stories",
+                                "romantic books",
+                                "business",
+                                "finance",
+                                "money",
+                                "entrepreneurship",
+                                "startup",
+                                "self help",
+                                "motivation",
+                                "personal growth",
+                                "success",
+                                "productivity"
+                            ]
+                        },
+                        {
+                            "name": "age_group",
+                            "type": "AGE_GROUP",
+                            "samples": [
+                                "other adults",
+                                "elderly",
+                                "seniors",
+                                "grown ups",
+                                "grown up",
+                                "young adults",
+                                "adults",
+                                "teenagers",
+                                "teenager",
+                                "young readers",
+                                "children",
+                                "child",
+                                "kid",
+                                "senior",
+                                "adult",
+                                "teen",
+                                "kids"
+                            ]
+                        },
+                        {
+                            "name": "language",
+                            "type": "BOOK_LANGUAGE",
+                            "samples": [
+                                "tam",
+                                "tamil",
+                                "hin",
+                                "eng",
+                                "tel",
+                                "telugu",
+                                "hindi",
+                                "english"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "Recommend a {genre} book for {age_group} in {language}",
+                        "Suggest a {genre} book for {age_group} in {language}",
+                        "Find a {genre} book for {age_group} in {language}",
+                        "Can you recommend a {genre} book for {age_group} in {language}",
+                        "Please suggest a {genre} book for {age_group} in {language}",
+                        "Help me find a {genre} book for {age_group} in {language}",
+                        "I want a {genre} book for {age_group} in {language}",
+                        "I would like a {genre} book for {age_group} in {language}",
+                        "Give me a {genre} recommendation for {age_group} in {language}",
+                        "Show me a {genre} book for {age_group} in {language}",
+                        "Recommend a book",
+                        "Suggest a book",
+                        "Find me a book",
+                        "Give me a book recommendation",
+                        "I want a book suggestion",
+                        "Can you recommend a book",
+                        "Please suggest a book",
+                        "Show me a book",
+                        "Help me choose a book",
+                        "Find my next book to read",
+                        "Genre only",
+                        "Recommend a fantasy book",
+                        "Suggest a mystery book",
+                        "Find me an adventure book",
+                        "I want a horror book",
+                        "Give me a science fiction book",
+                        "Recommend a romance book",
+                        "Suggest a business book",
+                        "Find a self help book",
+                        "Age group only",
+                        "Recommend books for kids",
+                        "Suggest books for teens",
+                        "Find books for adults",
+                        "Recommend books for seniors",
+                        "Language only",
+                        "Recommend books in English",
+                        "Suggest books in Telugu",
+                        "Find books in Hindi",
+                        "Show me books in Tamil",
+                        "{genre} {age_group}",
+                        "Recommend a fantasy book for kids",
+                        "Suggest a mystery book for adults",
+                        "Find an adventure book for teens",
+                        "Recommend a horror book for seniors",
+                        "{genre} {language}",
+                        "Recommend a fantasy book in English",
+                        "Suggest a mystery book in Telugu",
+                        "Find an adventure book in Hindi",
+                        "Complete combinations",
+                        "Recommend a fantasy book for kids in English",
+                        "Suggest a mystery book for adults in Telugu",
+                        "Find an adventure book for teens in Hindi",
+                        "Recommend a horror book for seniors in English",
+                        "Natural conversational utterances",
+                        "I enjoy fantasy stories",
+                        "I like mystery novels",
+                        "I want something exciting to read",
+                        "Can you find me a good book",
+                        "Suggest something interesting",
+                        "Give me something fun to read",
+                        "I need a new book"
+                    ]
+                },
+                {
+                    "name": "ZodiacBookRecommendationIntent",
+                    "slots": [],
+                    "samples": [
+                        "yes",
+                        "yes please",
+                        "sure",
+                        "okay",
+                        "ok",
+                        "why not",
+                        "sounds good",
+                        "absolutely",
+                        "of course",
+                        "please do",
+                        "go ahead",
+                        "yes recommend a book"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NoIntent",
+                    "samples": []
+                }
+            ],
+            "types": [
+                {
+                    "name": "BOOK_GENRE",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "Science Fiction"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Fantasy"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Mystery"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Romance"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Thriller"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Biography"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "History"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Self Help"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Technology"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Business"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Adventure"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Horror"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "AGE_GROUP",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "Kids",
+                                "synonyms": [
+                                    "kid, child, children"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Teen",
+                                "synonyms": [
+                                    "teens, teenager, teenagers"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Adult",
+                                "synonyms": [
+                                    "adults"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Senior",
+                                "synonyms": [
+                                    "seniors, elderly"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "BOOK_LANGUAGE",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "English"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Hindi"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Telugu"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Tamil"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Kannada"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Malayalam"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "French"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Spanish"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "dialog": {
+            "intents": [
+                {
+                    "name": "CaptureZodiacSignIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "day",
+                            "type": "AMAZON.Ordinal",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.465756545526.1579555936537"
+                            }
+                        },
+                        {
+                            "name": "month",
+                            "type": "AMAZON.Month",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.100508917653.1222665186466"
+                            }
+                        },
+                        {
+                            "name": "year",
+                            "type": "AMAZON.FOUR_DIGIT_NUMBER",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.465756545526.720335852331"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "BookRecommendationIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "genre",
+                            "type": "BOOK_GENRE",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1562780777681.829808606845"
+                            }
+                        },
+                        {
+                            "name": "age_group",
+                            "type": "AGE_GROUP",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1562780777681.1076681725935"
+                            }
+                        },
+                        {
+                            "name": "language",
+                            "type": "BOOK_LANGUAGE",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1562780777681.924101770077"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "delegationStrategy": "ALWAYS"
+        },
+        "prompts": [
+            {
+                "id": "Elicit.Slot.100508917653.1222665186466",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Which month you are born"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.465756545526.1579555936537",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "which day you are born"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.465756545526.720335852331",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Which year you are born"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1562780777681.829808606845",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Which genre are you interested in?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "What type of book are you interested in?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1562780777681.1076681725935",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Which age group is the book for?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "Who is the book intended for?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "Is the book for kids, teens, adults, or seniors?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1562780777681.924101770077",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Tell me your preferred language."
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "Would you like the book in English, Hindi, or Telugu?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "Which language would you prefer?"
+                    }
+                ]
+            }
+        ]
+    }
+}
