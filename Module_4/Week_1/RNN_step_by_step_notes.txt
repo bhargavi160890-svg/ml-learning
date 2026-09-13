@@ -1,0 +1,1197 @@
+RNN — STEP-BY-STEP NOTES
+==========================
+
+Purpose
+-------
+These notes cover the questions we discussed:
+1. What is x(t)?
+2. How is h1 calculated from x1?
+3. Does h1 mean the next word/character?
+4. Where does embedding fit?
+5. Is h(t) a weight?
+6. Does hidden state keep accumulating memory?
+7. What happens during backpropagation?
+8. Which values are updated?
+9. Why are RNN weights shared across time?
+10. What is BPTT?
+
+------------------------------------------------------------
+1. BASIC RNN IDEA
+------------------------------------------------------------
+
+An RNN processes a sequence one step at a time.
+
+Example text:
+
+"I" -> "love" -> "machine" -> "learning"
+
+At each time step:
+
+        Current input
+             x(t)
+              |
+              v
+        +-----------+
+h(t-1)->|    RNN    |
+        +-----------+
+              |
+              v
+            h(t)
+
+The hidden state h(t) is the RNN's current memory/representation
+after processing the current input.
+
+IMPORTANT:
+h(t) is NOT the next word.
+h(t) is NOT a weight.
+h(t) is a calculated hidden-state vector.
+
+------------------------------------------------------------
+2. STARTING FROM THE FIRST INPUT x1
+------------------------------------------------------------
+
+Suppose:
+
+x1 = [2, 3]
+
+At the beginning there is no previous information, so normally:
+
+h0 = [0, 0]
+
+The first step is:
+
+              x1
+               |
+               v
+          +---------+
+h0 -----> |   RNN   |
+          +---------+
+               |
+               v
+              h1
+
+The RNN calculates h1.
+
+The standard simple RNN equation is:
+
+h1 = tanh(Wxh*x1 + Whh*h0 + bh)
+
+Since h0 is initially zero:
+
+h1 = tanh(Wxh*x1 + bh)
+
+------------------------------------------------------------
+3. NUMERICAL EXAMPLE: CALCULATING h1
+------------------------------------------------------------
+
+Let:
+
+x1 = [2, 3]
+
+h0 = [0, 0]
+
+Wxh =
+[ 0.1  0.2 ]
+[ 0.3  0.4 ]
+
+Whh =
+[ 0.5  0.6 ]
+[ 0.7  0.8 ]
+
+bh =
+[ 0.1 ]
+[ 0.1 ]
+
+Step 1: Calculate Wxh*x1
+
+[0.1  0.2] [2]   = 0.1*2 + 0.2*3 = 0.8
+[0.3  0.4] [3]     0.3*2 + 0.4*3 = 1.8
+
+Therefore:
+
+Wxh*x1 = [0.8, 1.8]
+
+Step 2: Calculate Whh*h0
+
+h0 = [0, 0]
+
+Therefore:
+
+Whh*h0 = [0, 0]
+
+Step 3: Add bias
+
+[0.8, 1.8] + [0, 0] + [0.1, 0.1]
+= [0.9, 1.9]
+
+Step 4: Apply tanh
+
+h1 = tanh([0.9, 1.9])
+
+Approximately:
+
+h1 = [0.716, 0.956]
+
+Therefore:
+
++------------------------------------------------+
+| x1 = [2,3] -> RNN -> h1 = [0.716, 0.956]      |
++------------------------------------------------+
+
+h1 was CALCULATED. It was not looked up.
+
+------------------------------------------------------------
+4. WHAT IS h1?
+------------------------------------------------------------
+
+If the input is the first word:
+
+"I"
+
+then conceptually:
+
+"I"
+ |
+ v
+Embedding
+ |
+ v
+x1
+ |
+ v
+RNN
+ |
+ v
+h1
+
+h1 means:
+
+"RNN's internal numerical memory/representation after
+processing the word I."
+
+It does NOT mean:
+
+h1 = "love"          X
+h1 = next character  X
+h1 = a weight        X
+
+Correct:
+
+h1 = hidden state / memory vector
+
+------------------------------------------------------------
+5. EMBEDDING VS HIDDEN STATE
+------------------------------------------------------------
+
+For text, a token/word is converted into an embedding vector.
+
+Example:
+
+"I"
+ |
+ v
+Token ID
+ |
+ v
+Embedding table
+ |
+ v
+x1 = [0.2, 0.5, 0.1]
+ |
+ v
+RNN
+ |
+ v
+h1
+
+The embedding represents the CURRENT input.
+
+The hidden state represents the RNN's CURRENT MEMORY.
+
+Therefore:
+
+Embedding vector = x(t)
+Hidden state     = h(t)
+Weights          = learned parameters
+
+They are different things.
+
+------------------------------------------------------------
+6. DOES THE RNN LOOK UP h1 FROM AN EMBEDDING TABLE?
+------------------------------------------------------------
+
+NO.
+
+An embedding can be looked up:
+
+Token ID
+   |
+   v
+Embedding matrix
+   |
+   v
+x1
+
+But h1 is calculated:
+
+x1 + h0
+   |
+   v
+Wxh*x1 + Whh*h0 + bh
+   |
+   v
+ tanh
+   |
+   v
+ h1
+
+So:
+
+Embedding = lookup/transformation of token
+h1        = calculated by RNN
+
+------------------------------------------------------------
+7. TEXT EXAMPLE
+------------------------------------------------------------
+
+Sentence:
+
+"I love machine learning"
+
+Token sequence:
+
+"I" -> "love" -> "machine" -> "learning"
+
+Embeddings:
+
+"I"        -> x1
+"love"     -> x2
+"machine"  -> x3
+"learning" -> x4
+
+RNN:
+
+x1 + h0 -> h1
+x2 + h1 -> h2
+x3 + h2 -> h3
+x4 + h3 -> h4
+
+Line diagram:
+
+"I"        -> x1 -> RNN -> h1
+                         |
+"love"     -> x2 -> RNN -> h2
+                              |
+"machine"  -> x3 -> RNN -> h3
+                                   |
+"learning" -> x4 -> RNN -> h4
+
+More accurately, the previous hidden state enters each next RNN:
+
+                 h0
+                  |
+"I" -> x1 ------> RNN ------> h1
+                               |
+"love" -> x2 ----------------> RNN ------> h2
+                                            |
+"machine" -> x3 --------------------------> RNN ------> h3
+                                                         |
+"learning" -> x4 --------------------------------------> RNN -> h4
+
+The same RNN weights are used at each step.
+
+------------------------------------------------------------
+8. h1, h2, h3 ARE NOT WORDS
+------------------------------------------------------------
+
+Example:
+
+h1 = [0.7, 0.3, 0.8]
+
+This does not mean:
+
+h1 = "love"
+
+Instead:
+
+h1 = numerical representation of the information the RNN
+     currently retains after processing the first input.
+
+Similarly:
+
+h2 = representation after processing first + second input
+h3 = representation after processing first + second + third input
+
+Conceptually:
+
+h1 ~ memory after "I"
+h2 ~ memory after "I love"
+h3 ~ memory after "I love machine"
+
+The hidden state is a compressed representation, not a copy
+of the complete sequence.
+
+------------------------------------------------------------
+9. DOES h(t) KEEP ACCUMULATING EVERYTHING?
+------------------------------------------------------------
+
+Not exactly.
+
+A beginner's mental model may be:
+
+h2 = h1 + x2
+h3 = h2 + x3
+
+But a simple RNN actually uses:
+
+h(t) = tanh(Wxh*x(t) + Whh*h(t-1) + bh)
+
+So the new memory depends on:
+
+1. Current input x(t)
+2. Previous memory h(t-1)
+3. Learned weights
+4. Bias
+5. Activation function
+
+Line diagram:
+
+Previous memory
+     h(t-1)
+        |
+        v
+   +-----------+
+   |  Whh*h    |
+   +-----------+
+        |
+        |
+Current x(t) --> Wxh*x(t)
+        |          |
+        v          v
+          +-----+
+          | ADD |
+          +-----+
+             |
+          + bias
+             |
+             v
+            tanh
+             |
+             v
+            h(t)
+
+Therefore the RNN continuously UPDATES its hidden state;
+it does not permanently store every input separately inside h(t).
+
+------------------------------------------------------------
+10. WHY CAN h(t) REPRESENT MEMORY?
+------------------------------------------------------------
+
+Because the previous hidden state is passed to the next time step.
+
+Example:
+
+x1 -> h1
+x2 + h1 -> h2
+x3 + h2 -> h3
+x4 + h3 -> h4
+
+So information can travel:
+
+h1 -> h2 -> h3 -> h4
+
+This is the memory mechanism of an RNN.
+
+------------------------------------------------------------
+11. DOES h1 PREDICT THE NEXT WORD?
+------------------------------------------------------------
+
+h1 itself is not a word prediction.
+
+For next-word prediction, h1 is normally passed through
+an output layer.
+
+Example:
+
+"I"
+ |
+ v
+Embedding
+ |
+ v
+x1
+ |
+ v
+RNN
+ |
+ v
+h1
+ |
+ v
+Linear/output layer
+ |
+ v
+Softmax
+ |
+ v
+Probabilities:
+love     0.60
+am       0.20
+like     0.10
+machine  0.05
+...
+
+So:
+
+h1 -> output layer -> prediction probabilities
+
+The hidden state is used to make the prediction.
+
+------------------------------------------------------------
+12. COMPLETE NEXT-WORD PREDICTION FLOW
+------------------------------------------------------------
+
+             "I"
+              |
+              v
+          Embedding
+              |
+              v
+             x1
+              |
+              v
+         +----------+
+h0 ----> |   RNN    |
+         +----------+
+              |
+              v
+             h1
+              |
+              v
+       +--------------+
+       | Linear Layer |
+       +--------------+
+              |
+              v
+           Softmax
+              |
+              v
+       Next-word probabilities
+              |
+              v
+            "love"
+
+Important:
+h1 is NOT "love".
+h1 is used to calculate the probability of "love", "am", etc.
+
+------------------------------------------------------------
+13. WHAT ARE THE WEIGHTS?
+------------------------------------------------------------
+
+A basic RNN has learnable parameters such as:
+
+Wxh = input-to-hidden weights
+Whh = hidden-to-hidden weights
+bh  = hidden bias
+
+If an output layer is present:
+
+Why = hidden-to-output weights
+by  = output bias
+
+Weights are learned during training.
+
+Hidden states are calculated during the forward pass.
+
+Summary:
+
+x(t)       = current input
+Wxh, Whh   = learned weights
+b          = learned bias
+h(t)       = calculated hidden state
+y_hat      = predicted output
+
+------------------------------------------------------------
+14. VERY IMPORTANT: WEIGHTS ARE SHARED
+------------------------------------------------------------
+
+The SAME Wxh and Whh are reused at every time step.
+
+Example:
+
+x1 -> [RNN using Wxh, Whh] -> h1
+x2 -> [RNN using Wxh, Whh] -> h2
+x3 -> [RNN using Wxh, Whh] -> h3
+
+It is NOT:
+
+x1 -> W1
+x2 -> W2
+x3 -> W3
+
+Instead:
+
+x1 -> W
+x2 -> SAME W
+x3 -> SAME W
+
+Line diagram:
+
+             SAME Wxh, Whh
+                  |
+        +---------+---------+
+        |         |         |
+        v         v         v
+       RNN       RNN       RNN
+        |         |         |
+       h1        h2        h3
+        ^         ^         ^
+        |         |         |
+       x1        x2        x3
+
+This is called WEIGHT SHARING across time.
+
+------------------------------------------------------------
+15. FORWARD PASS
+------------------------------------------------------------
+
+For a sequence of 3 inputs:
+
+h1 = tanh(Wxh*x1 + Whh*h0 + bh)
+
+h2 = tanh(Wxh*x2 + Whh*h1 + bh)
+
+h3 = tanh(Wxh*x3 + Whh*h2 + bh)
+
+Line diagram:
+
+h0
+ |
+ v
+x1 ---> RNN ---> h1
+                 |
+                 v
+x2 -----------> RNN ---> h2
+                            |
+                            v
+x3 ----------------------> RNN ---> h3
+                                      |
+                                      v
+                                   Output
+                                      |
+                                      v
+                                    Loss
+
+Notice:
+h1 is passed forward.
+h2 is passed forward.
+h3 is passed to the output.
+
+------------------------------------------------------------
+16. WHAT HAPPENS DURING BACKPROPAGATION?
+------------------------------------------------------------
+
+During training:
+
+Forward:
+
+x1 -> h1 -> h2 -> h3 -> output -> Loss
+
+Then gradients travel backward:
+
+Loss -> h3 -> h2 -> h1
+
+This is called:
+
+BPTT = Backpropagation Through Time
+
+Line diagram:
+
+FORWARD:
+x1 ---> h1 ---> h2 ---> h3 ---> Output ---> Loss
+        |       |       |
+        |       |       |
+        +-------+-------+   (same weights are reused)
+
+BACKWARD:
+x1 <--- h1 <--- h2 <--- h3 <--- Output <--- Loss
+                  gradients flow backward
+
+The hidden states are part of the computation graph.
+
+------------------------------------------------------------
+17. ARE h1, h2, h3 UPDATED?
+------------------------------------------------------------
+
+Normally, NO.
+
+They are not learnable model parameters.
+
+They are calculated values.
+
+During backward propagation, gradients FLOW THROUGH them.
+
+For example:
+
+dL/dh1
+
+may be calculated.
+
+But normally we do not perform:
+
+h1 = h1 - learning_rate * dL/dh1
+
+Instead, gradients through h1/h2/h3 are used to calculate
+gradients for the actual learnable weights.
+
+The optimizer updates the weights.
+
+------------------------------------------------------------
+18. WHAT ACTUALLY GETS UPDATED?
+------------------------------------------------------------
+
+Typical simple RNN parameters:
+
+Wxh  <- UPDATED
+Whh  <- UPDATED
+bh   <- UPDATED
+
+If there is an output layer:
+
+Why  <- UPDATED
+by   <- UPDATED
+
+The update rule is:
+
+W_new = W_old - learning_rate * dL/dW
+
+Example:
+
+W_old = 0.50
+gradient = 0.20
+learning_rate = 0.10
+
+W_new = 0.50 - (0.10 * 0.20)
+      = 0.48
+
+The weight changes from 0.50 to 0.48.
+
+------------------------------------------------------------
+19. WHY DO h1/h2/h3 MATTER IN BACKPROPAGATION?
+------------------------------------------------------------
+
+Although hidden states are not parameters, they connect the
+different time steps.
+
+Example:
+
+x1 -> h1 -> h2 -> h3 -> Loss
+
+The loss at the end can depend on h3.
+h3 depends on h2.
+h2 depends on h1.
+
+Therefore:
+
+Loss
+ |
+ v
+h3
+ |
+ v
+h2
+ |
+ v
+h1
+
+The gradient can travel backward through the hidden states.
+
+This is why it is called:
+
+BACKPROPAGATION THROUGH TIME.
+
+------------------------------------------------------------
+20. WHY DO SHARED WEIGHTS RECEIVE GRADIENTS FROM MULTIPLE STEPS?
+------------------------------------------------------------
+
+The same Wxh and Whh are used at t=1, t=2, t=3,...
+
+Therefore their total gradient has contributions from multiple
+time steps.
+
+Conceptually:
+
+dL/dWhh =
+    gradient contribution at t=1
+  + gradient contribution at t=2
+  + gradient contribution at t=3
+  + ...
+
+So one shared parameter learns from the whole sequence.
+
+------------------------------------------------------------
+21. IMPORTANT DISTINCTION: PARAMETER VS STATE
+------------------------------------------------------------
+
+PARAMETER:
+
+Wxh, Whh, bias
+
+- Learned during training
+- Stored in the model
+- Updated by optimizer
+
+STATE:
+
+h1, h2, h3
+
+- Calculated during forward pass
+- Carries information through the sequence
+- Not normally learned as permanent parameters
+- Gradients can flow through them
+
+INPUT:
+
+x1, x2, x3
+
+- Data entering the RNN
+
+OUTPUT:
+
+y_hat
+
+- Prediction produced by output layer
+
+------------------------------------------------------------
+22. THE BIG PICTURE
+------------------------------------------------------------
+
+TEXT CASE:
+
+Token
+ |
+ v
+Token ID
+ |
+ v
+Embedding
+ |
+ v
+x(t)
+ |
+ v
++-----------------------+
+|         RNN           |
+|                       |
+| x(t) + h(t-1)         |
+|       |               |
+|       v               |
+|     h(t)              |
++-----------------------+
+ |
+ v
+Output layer
+ |
+ v
+Softmax
+ |
+ v
+Prediction
+
+Mathematical core:
+
+h(t) = tanh(Wxh*x(t) + Whh*h(t-1) + bh)
+
+Output:
+
+y_hat(t) = softmax(Why*h(t) + by)
+
+------------------------------------------------------------
+23. NUMERICAL FLOW IN ONE LINE
+------------------------------------------------------------
+
+First step:
+
+x1 + h0
+  |
+  v
+Wxh*x1 + Whh*h0 + bh
+  |
+  v
+tanh
+  |
+  v
+h1
+
+Second step:
+
+x2 + h1
+  |
+  v
+Wxh*x2 + Whh*h1 + bh
+  |
+  v
+tanh
+  |
+  v
+h2
+
+Third step:
+
+x3 + h2
+  |
+  v
+Wxh*x3 + Whh*h2 + bh
+  |
+  v
+tanh
+  |
+  v
+h3
+
+------------------------------------------------------------
+24. WHY SIMPLE RNNs HAVE PROBLEMS WITH LONG SEQUENCES
+------------------------------------------------------------
+
+The hidden state is passed through many time steps:
+
+h1 -> h2 -> h3 -> h4 -> ... -> h20
+
+During backpropagation:
+
+h20 -> h19 -> h18 -> ... -> h1
+
+Repeated multiplication can make gradients:
+
+Very small -> VANISHING GRADIENT
+
+or
+
+Very large -> EXPLODING GRADIENT
+
+Example of shrinking:
+
+0.5 * 0.5 * 0.5 * ... many times
+
+The gradient can become extremely small.
+
+This makes it difficult for a simple RNN to learn long-term
+dependencies.
+
+------------------------------------------------------------
+25. WHY LSTM/GRU WERE DEVELOPED
+------------------------------------------------------------
+
+Simple RNN:
+
+Previous memory + current input
+              |
+              v
+             h(t)
+
+LSTM adds gates to control memory:
+
+                +----------------+
+Current input ->|                |
+Previous state->|      LSTM      |-> New memory
+                |     gates      |
+                +----------------+
+
+Conceptually, gates learn:
+
+- What should I remember?
+- What should I forget?
+- What should I output?
+
+So:
+
+RNN  = simple memory update
+LSTM = controlled memory update
+
+------------------------------------------------------------
+26. BASIC PYTORCH RNN EXAMPLE
+------------------------------------------------------------
+
+import torch
+import torch.nn as nn
+
+# batch = 1
+# sequence length = 3
+# input features = 2
+
+x = torch.tensor([
+    [[2.0, 3.0],
+     [4.0, 5.0],
+     [6.0, 7.0]]
+])
+
+rnn = nn.RNN(
+    input_size=2,
+    hidden_size=2,
+    batch_first=True
+)
+
+output, hidden = rnn(x)
+
+print("output shape:", output.shape)
+print("hidden shape:", hidden.shape)
+print("output:", output)
+print("hidden:", hidden)
+
+Expected shapes:
+
+x       = (1, 3, 2)
+output  = (1, 3, 2)
+hidden  = (1, 1, 2)
+
+Interpretation:
+
+output contains hidden state at every time step:
+
+[ h1 ]
+[ h2 ]
+[ h3 ]
+
+hidden normally contains the FINAL hidden state:
+
+h3
+
+------------------------------------------------------------
+27. PYTORCH TEXT EXAMPLE WITH EMBEDDING
+------------------------------------------------------------
+
+import torch
+import torch.nn as nn
+
+embedding = nn.Embedding(
+    num_embeddings=1000,
+    embedding_dim=5
+)
+
+rnn = nn.RNN(
+    input_size=5,
+    hidden_size=4,
+    batch_first=True
+)
+
+# Example token IDs:
+# "I"=10, "love"=25, "cats"=87
+
+x = torch.tensor([[10, 25, 87]])
+
+# Token IDs -> embedding vectors
+embedded = embedding(x)
+
+# Shape:
+# (batch=1, sequence=3, embedding_size=5)
+
+output, hidden = rnn(embedded)
+
+# output:
+# hidden state at every time step
+# shape = (1, 3, 4)
+
+# hidden:
+# final hidden state
+# shape = (1, 1, 4)
+
+Flow:
+
+Token IDs
+   |
+   v
+Embedding
+   |
+   v
+x1, x2, x3
+   |
+   v
+RNN
+   |
+   v
+h1, h2, h3
+   |
+   v
+Output layer
+   |
+   v
+Prediction
+
+------------------------------------------------------------
+28. SIMPLE TRAINING LOOP
+------------------------------------------------------------
+
+model = nn.RNN(input_size=2, hidden_size=2, batch_first=True)
+
+optimizer = torch.optim.SGD(
+    model.parameters(),
+    lr=0.01
+)
+
+criterion = nn.MSELoss()
+
+output, hidden = model(x)
+
+loss = criterion(output, target)
+
+optimizer.zero_grad()
+
+loss.backward()
+
+optimizer.step()
+
+The important sequence is:
+
+1. Forward pass
+2. Calculate loss
+3. Backward pass
+4. Calculate gradients
+5. optimizer.step()
+6. Update learnable weights
+
+Line diagram:
+
+Input
+ |
+ v
+Forward
+ |
+ v
+Prediction
+ |
+ v
+Loss
+ |
+ v
+Backward
+ |
+ v
+Gradients
+ |
+ v
+Optimizer
+ |
+ v
+UPDATED WEIGHTS
+
+------------------------------------------------------------
+29. WHAT DOES loss.backward() DO?
+------------------------------------------------------------
+
+loss.backward()
+
+does NOT simply change h1.
+
+It calculates gradients for the model's parameters.
+
+Conceptually:
+
+Loss
+ |
+ v
+Output
+ |
+ v
+h3
+ |
+ v
+h2
+ |
+ v
+h1
+ |
+ v
+Shared RNN weights
+ |
+ v
+Gradients
+
+Then:
+
+optimizer.step()
+
+updates the weights.
+
+------------------------------------------------------------
+30. FINAL CHEAT SHEET
+------------------------------------------------------------
+
+INPUT:
+x(t) = current input vector
+
+FOR TEXT:
+word/token -> embedding -> x(t)
+
+INITIAL STATE:
+h0 = usually zeros
+
+RNN EQUATION:
+
+h(t) = tanh(Wxh*x(t) + Whh*h(t-1) + bh)
+
+HIDDEN STATE:
+h(t) = calculated memory representation
+
+IMPORTANT:
+h(t) is NOT a weight.
+h(t) is NOT the next word.
+h(t) is NOT normally a learnable parameter.
+
+WEIGHTS:
+Wxh, Whh, biases
+
+These are learned and shared across all time steps.
+
+OUTPUT:
+
+y_hat(t) = softmax(Why*h(t) + by)
+
+TRAINING:
+
+Forward:
+x1 -> h1 -> h2 -> h3 -> output -> loss
+
+Backward:
+loss -> h3 -> h2 -> h1
+
+BPTT:
+Backpropagation Through Time
+
+UPDATED:
+Wxh, Whh, biases, output-layer parameters
+
+NOT NORMALLY UPDATED:
+h1, h2, h3 as permanent parameters
+
+KEY IDEA:
+
+                 CURRENT INPUT
+                      x(t)
+                       |
+                       v
+                  +---------+
+h(t-1) ---------->|   RNN   |
+                  +---------+
+                       |
+                       v
+                     h(t)
+                 NEW MEMORY
+                       |
+                       v
+                  next step
+
+THE ONE SENTENCE TO REMEMBER:
+
+"The RNN uses the current input and the previous hidden state
+to calculate a new hidden state; during backpropagation,
+gradients flow through those hidden states to update the
+shared learnable weights."
+
+END OF RNN NOTES
+
+
+
+
+
+e1, e2, e3, latent space-->d3(e3+latent)-->d2(e2,)-d1

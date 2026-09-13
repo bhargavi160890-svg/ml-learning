@@ -1,0 +1,210 @@
+More Utterances Cheat Sheet
+BookRecommendationIntent
+Generic requests
+Recommend a book
+Suggest a book
+Find me a book
+Give me a book recommendation
+I want a book suggestion
+Can you recommend a book
+Please suggest a book
+Show me a book
+Help me choose a book
+Find my next book to read
+Genre only
+Recommend a fantasy book
+Suggest a mystery book
+Find me an adventure book
+I want a horror book
+Give me a science fiction book
+Recommend a romance book
+Suggest a business book
+Find a self help book
+Age group only
+Recommend books for kids
+Suggest books for teens
+Find books for adults
+Recommend books for seniors
+Language only
+Recommend books in English
+Suggest books in Telugu
+Find books in Hindi
+Show me books in Tamil
+Genre + Age
+Recommend a fantasy book for kids
+Suggest a mystery book for adults
+Find an adventure book for teens
+Recommend a horror book for seniors
+Genre + Language
+Recommend a fantasy book in English
+Suggest a mystery book in Telugu
+Find an adventure book in Hindi
+Complete combinations
+Recommend a fantasy book for kids in English
+Suggest a mystery book for adults in Telugu
+Find an adventure book for teens in Hindi
+Recommend a horror book for seniors in English
+Natural conversational utterances
+I enjoy fantasy stories
+I like mystery novels
+I want something exciting to read
+Can you find me a good book
+Suggest something interesting
+Give me something fun to read
+I need a new book
+2️⃣ Slot Synonyms Cheat Sheet
+BOOK_GENRE
+Fantasy
+fantasy
+magic
+magical stories
+wizard stories
+fantasy novels
+Mystery
+mystery
+detective
+crime
+suspense
+investigation
+thriller
+Adventure
+adventure
+action
+exploration
+journey
+quest
+Horror
+horror
+scary
+ghost stories
+thriller horror
+Romance
+romance
+love stories
+romantic books
+Business
+business
+finance
+money
+entrepreneurship
+startup
+Self Help
+self help
+motivation
+personal growth
+success
+productivity
+AGE_GROUP
+Kids
+kids
+kid
+child
+children
+young readers
+Teen
+teen
+teenager
+teenagers
+young adults
+Adult
+adult
+adults
+grown up
+grown ups
+Senior
+senior
+seniors
+elderly
+older adults
+BOOK_LANGUAGE
+English
+english
+eng
+Telugu
+telugu
+tel
+Hindi
+hindi
+hin
+Tamil
+tamil
+tam
+3️⃣ Demo Preparation Cheat Sheet
+Demo Flow 1 (Main Demo)
+Open skill
+
+My birthday is August sixteenth nineteen ninety
+
+YES
+
+YES
+
+Recommend a mystery book for adults in English
+
+NO
+Expected Output
+Launch
+↓
+Zodiac Profile
+↓
+Zodiac Book Recommendation
+↓
+Continue Exploring
+↓
+Standard Book Recommendation
+↓
+Graceful Exit
+Demo Flow 2 (Negative Path)
+Open skill
+
+My birthday is January tenth twenty fifteen
+
+NO
+
+Expected:
+
+Would you like a book recommendation based on your zodiac personality?
+
+No
+
+That's okay. You can always ask me for personalized book recommendations or zodiac information anytime.
+Have a wonderful day!
+Demo Flow 3 (Help Intent)
+help
+
+Expected:
+
+You can tell me your birthday to know your zodiac sign,
+ask for a book recommendation,
+or get a personalized recommendation based on your zodiac personality.
+Demo Flow 4 (Stop Intent)
+stop
+
+Expected:
+
+Thank you for using Zodiac Guide.
+Have a wonderful day!
+4️⃣ 30 Second Project Explanation for Judges
+Our project is an Alexa conversational assistant called Zodiac Guide.
+
+The skill identifies the user's zodiac sign from their birth date and provides personality traits, lucky color, lucky number, compatible signs and horoscope information.
+
+The user can then receive a personalized book recommendation based on zodiac personality.
+
+The skill also supports standard book recommendations using genre, age group and language preferences.
+
+We implemented multiple intents, custom slots, CSV based knowledge storage, Lambda functions and session management to maintain conversational context across multiple turns.
+5️⃣ Architecture Cheat Sheet
+Alexa Device
+    ↓
+Interaction Model
+    ↓
+Intent Recognition
+    ↓
+AWS Lambda
+    ↓
+Google Sheets CSV Database
+    ↓
+Alexa Response
+
+Today's work is mostly improving recognition accuracy and preparing for presentation, which is exactly where you should be at this stage of the project.
